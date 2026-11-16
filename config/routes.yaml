@@ -9,9 +9,3 @@
 
 controllers:
     resource: routing.controllers
-app_home:
-    path: /
-    controller: App\Controller\HomeController::index
-app_profile:
-    path: /profil/{name}
-    controller: App\Controller\UserController::profile
