@@ -13,5 +13,5 @@ app_home:
     path: /
     controller: App\Controller\HomeController::index
 app_profile:
-    path: /profil
+    path: /profil/{name}
     controller: App\Controller\UserController::profile
