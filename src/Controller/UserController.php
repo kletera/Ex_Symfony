@@ -26,11 +26,25 @@ final class UserController extends AbstractController
             'city' => $city,
         ]);
     }
-
-     #[Route('/users', name: 'app_users')]
-     public function showAllUser(){
+    
+    // Affichage de tous les utilisateur
+    #[Route('/users', name: 'app_users')]
+    public function showAllUser(){
         return $this->render('user/show_all_user.html.twig', [
             'users'=> $this->userService->getUsers(),
         ]);
-     }
+    }
+
+    // Affichage de l'utilisateur en fonction de son identifiant numérique
+    #[Route('/users/{id}', name: 'app_user_id')]
+    public function showUserById(int $id){
+        $user=null;
+        $user=$this->userService->getUserById($id);
+        if ($user === null) {
+            throw $this->createNotFoundException('Erreur 404 : Utilisateur introuvable.');
+        }
+        return $this->render('user/show_user_id.html.twig', [
+            'user'=> $user,
+        ]);
+    }
 }

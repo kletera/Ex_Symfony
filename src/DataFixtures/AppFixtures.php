@@ -7,7 +7,6 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Entity\Book;
-use DateTime;
 use DateTimeImmutable;
 use Faker;
 

@@ -11,6 +11,9 @@
                     <li>{{ user.firstname }}</li>
                     <li>{{ user.lastname }}</li>
                     <li>{{ user.email }}</li>
+                    <a href="{{ path('app_user_id', {id: user.id}) }}">
+                       Voir le détail
+                   </a>
                 </ul>
             {% endfor %}
         {% else %}

@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Détail de l'utilisateur{% endblock %}
+
+{% block body %}
+    <section>
+        {% if user %}
+        <h1>Détail de l'utilisateur</h1>
+                <ul>
+                    <li>Prénom : {{ user.firstname }}</li>
+                    <li>Nom :{{ user.lastname }}</li>
+                    <li>Email : {{ user.email }}</li>
+                    <a href="{{ path('app_users') }}">
+                        Voir la liste des utilisateur
+                    </a>
+                </ul>
+        {% else %}
+        <h2>Erreur utilisateur introuvable</h2>
+        {% endif %}
+    </section>  
+{% endblock %}
