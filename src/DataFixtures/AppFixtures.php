@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
         for($i=0; $i<10; $i++){
             //Créer des objets User
             $user = new User();
-            $user->setEmail($faker->unique()->email);
+            $user->setEmail($faker->unique()->email());
             $user->setPassword($faker->password());
             $user->setFirstname($faker->lastName());
             $user->setLastname($faker->firstName());
@@ -50,8 +50,8 @@ class AppFixtures extends Fixture
             $book->setPublishAt(new DateTimeImmutable($faker->date()));
             $book->setAuthor($faker->name());
             $book->setUser($faker->randomElement($tabUser));
-            foreach($faker->randomElements($tabCatego, 5, false) as $catego){
-                $book->addCategory($catego) ;
+            for ($j=0; $j < 5; $j++) { 
+                $book->addCategory($faker->randomElement($tabCatego)) ;               
             }
             
             //persister l'objet

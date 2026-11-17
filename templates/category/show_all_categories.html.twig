@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% block title %}
+Liste des categories
+{% endblock %}
+{% block body %}
+<section>
+    {% if categories %}
+    <h1>Liste des categories</h1>
+        {# boucler sur la liste des categories #}
+        {% for category in categories %}
+            <article>{{ category.id }}</article>
+        {% endfor %}
+    {% else %}
+    <h2>La liste est vide</h2>
+    {% endif %}
+</section>  
+{% endblock %}
