@@ -38,11 +38,13 @@ final class UserController extends AbstractController
     // Affichage de l'utilisateur en fonction de son identifiant numérique
     #[Route('/users/{id}', name: 'app_user_id')]
     public function showUserById(int $id){
-        $user=null;
+
         $user=$this->userService->getUserById($id);
+
         if ($user === null) {
             throw $this->createNotFoundException('Erreur 404 : Utilisateur introuvable.');
         }
+        
         return $this->render('user/show_user_id.html.twig', [
             'user'=> $user,
         ]);

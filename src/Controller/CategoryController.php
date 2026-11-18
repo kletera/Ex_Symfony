@@ -15,8 +15,10 @@ class CategoryController extends AbstractController{
     public function showAllCategories():Response{
         $categories = $this->categoryService->getCategories();
     
-        return $this->render('categoy/show_all_categories.html.twig', [
+        return $this->render('category/show_all_categories.html.twig', [
             'categories' =>  $categories,
         ]);
     }
+
+    
 }
