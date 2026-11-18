@@ -11,12 +11,22 @@ class CategoryController extends AbstractController{
     public function __construct(private CategoryService $categoryService)
     {}
 
-    #[Route('/categories', name: 'app_categories')]
-    public function showAllCategories():Response{
+     #[Route(path:'/categories', name: 'app_categories')]
+    public function showAllCategories(): Response
+    {
+        //Récupération de toutes les catégories de la BDD
         $categories = $this->categoryService->getCategories();
-    
-        return $this->render('category/show_all_categories.html.twig', [
-            'categories' =>  $categories,
+
+        return $this->render('category/show_all_categories.html.twig',[
+            'categories' => $categories
+        ]);
+    }
+
+    #[Route('/category/{id}', name:'app_category')]
+    public function showCategoryById(int $id): Response
+    {
+        return $this->render('category/show_category_id.html.twig', [
+            "category" => $this->categoryService->getCategoryById($id)
         ]);
     }
 
