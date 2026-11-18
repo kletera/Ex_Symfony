@@ -10,7 +10,31 @@ final class HomeController extends AbstractController{
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        return $this->render('home/index.html.twig');
+        $formations = [
+        [
+            'title' => 'Développement PHP',
+            'description' => 'Découvrir le développement côté serveur.',
+        ],
+        [
+            'title' => 'Symfony',
+            'description' => 'Structurer une application web en PHP.',
+        ],
+        [
+            'title' => 'Vue',
+            'description' => 'Créer des interfaces web dynamiques avec Vue.js.',
+        ],
+        [
+            'title' => 'Design',
+            'description' => 'Concevoir des interfaces claires et esthétiques.',
+        ],
+        [
+            'title' => 'Pub',
+            'description' => 'Découvrer la joie de la boisson.',
+        ],
+    ];
+        return $this->render('home/index.html.twig',[
+            'formation' => $formations,
+        ]);
     }
 }
 

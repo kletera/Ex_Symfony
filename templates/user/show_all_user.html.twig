@@ -1,23 +1,43 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Liste des utilisateur{% endblock %}
+{% block title %}Liste des utilisateurs{% endblock %}
 
 {% block body %}
-    <section>
+    <section class="container mx-auto px-4 py-8">
         {% if users %}
-        <h1>Liste des utilisateur</h1>
-            {% for user in users %}
-                <ul>
-                    <li>{{ user.firstname }}</li>
-                    <li>{{ user.lastname }}</li>
-                    <li>{{ user.email }}</li>
-                    <a href="{{ path('app_user_id', {id: user.id}) }}">
-                       Voir le détail
-                   </a>
-                </ul>
-            {% endfor %}
+            <h1 class="text-3xl font-bold mb-6">Liste des utilisateurs</h1>
+
+            <div class="overflow-x-auto rounded-box border border-base-300 bg-base-100 shadow-sm">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th class="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr class="hover:bg-base-200">
+                                <td>{{ user.lastname }}</td>
+                                <td>{{ user.firstname }}</td>
+                                <td>{{ user.email }}</td>
+                                <td class="text-right">
+                                    <a href="{{ path('app_user_id', {id: user.id}) }}"
+                                       class="btn btn-primary btn-sm">
+                                        Voir le détail
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% else %}
-        <h2>La liste est vide</h2>
+            <div role="alert" class="alert alert-info">
+                <span>La liste est vide.</span>
+            </div>
         {% endif %}
-    </section>  
+    </section>
 {% endblock %}
