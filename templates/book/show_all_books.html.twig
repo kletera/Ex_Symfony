@@ -16,7 +16,7 @@
     <ul>
         {% for book in books %}
             <li>{{book.title}} - {{book.author}}</li>
-            <a href="{{ path('app_book_show', {id: book.id}) }}">
+            <a href="{{ path('app_book_id', {id: book.id}) }}">
                 Voir le détail
             </a>
         {% endfor %}

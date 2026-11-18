@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du livre par Titre{% endblock %}
+
+{% block body %}
+    {% if book %}
+        <h1>Détail du livre par son id</h1>
+        <h2>{{book.title}}</h2>
+        <ul>
+            <li>Resumer :{{book.resume}}</li>
+            <li>Date de publication :{{book.publis_at}}</li>
+            <li>Autheur :{{book.author}}</li>
+        </ul>
+        <a href="{{ path('app_books') }}">
+            Voir la liste des livres
+        </a>
+    {% else %}
+        <h1>Erreur 404 : Aucun livre trouver</h1>
+     {% endif %}   
+{% endblock %}

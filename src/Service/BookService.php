@@ -9,7 +9,16 @@ class BookService{
     public function __construct(private BookRepository $bookRepository)
     {}
 
-    public function getBook(){
-        
+    public function getBooks(){
+        return $this->bookRepository->findAll() ?? [];
+    }
+
+    public function getBookById(int $id): ?Book
+    {
+        return $this->bookRepository->find($id);
+    }
+
+    public function getBookByTitle(string $title): ?Book{
+        return $this->bookRepository->findOneBy(['title'=> $title]);
     }
 }
