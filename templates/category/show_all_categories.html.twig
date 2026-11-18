@@ -12,14 +12,14 @@
             title="Catégorie"
             description="{{ item.name }}"
         />
-            {# <article class="card min-w-0 border border-base-300 bg-base-100 shadow-sm">
+            <article class="card min-w-0 border border-base-300 bg-base-100 shadow-sm">
                 <div class="card-body gap-4 p-6">
                     <span class="text-xs font-medium uppercase tracking-widest text-base-content/50">Catégorie</span>
                     <h2 class="card-title text-xl">{{ item.name }}</h2>
 
                     <div class="card-actions mt-4 justify-end"><a class="btn btn-neutral btn-sm" href="{{ path('app_category', {id: item.id}) }}" aria-label="Voir le détail : {{ item.name }}">Voir le détail <span aria-hidden="true">→</span></a></div>
                 </div>
-            </article> #}
+            </article>
         {% else %}
             <div class="col-span-full rounded-box border border-dashed border-base-300 bg-base-100 p-10 text-center"><h2 class="text-lg font-medium">La liste est vide</h2><p class="mt-2 text-base-content/60">Les catégories apparaîtront ici.</p></div>
         {% endfor %}
