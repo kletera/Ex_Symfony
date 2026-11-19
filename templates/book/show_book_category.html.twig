@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail des livres par catégories{% endblock %}
+
+{% block body %}
+<a class="btn btn-ghost btn-sm mb-6" href="{{ path('app_books') }}"><span aria-hidden="true">←</span> Retour a la liste des livres</a>
+<article class="card mx-auto max-w-3xl border border-base-300  shadow-sm">
+    {% if books %}
+        {% for book in books %}
+            <div class="card-body gap-8 mt-2 p-6 sm:p-10 bg-base-100">
+                <header>
+                    <p class="mb-3 text-sm font-medium uppercase tracking-widest text-base-content/50">Détail du livre</p>
+                    <h1 class="text-3xl font-semibold tracking-tight">{{ book.title }}</h1>
+                </header>
+
+                <dl class="grid grid-cols-1 gap-6 border-t border-base-300 pt-8 sm:grid-cols-2">
+                    <div>
+                        <dt class="text-sm text-base-content/60">Résumé</dt>
+                        <dd class="mt-2 font-medium">{{ book.resume }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm text-base-content/60">Auteur</dt>
+                        <dd class="mt-2 font-medium">{{ book.author }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm text-base-content/60">Date de publication</dt>
+                        <dd class="mt-2 font-medium">
+                            {{ book.publishAt ? book.publishAt|date('d/m/Y') : '—' }}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm text-base-content/60">Catégories</dt>
+                        <dd class="mt-2 font-medium"></dd>
+                            {% for categories in book.categories %}
+                            <twig:Badge
+                            :label="categories.name"
+                            />  
+                            {% endfor %}
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+            {% endfor %}
+        {% else %}
+            <h1 class="text-2xl font-semibold"> Aucun livre trouver a partire de cette date</h1><p class="text-base-content/60">Cette fiche n’existe pas dans la bibliothèque.</p>
+        {% endif %}
+</article>
+{% endblock %}

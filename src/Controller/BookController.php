@@ -72,10 +72,17 @@ final class BookController extends AbstractController
 
     #[Route('/books/recent/{date}', name: 'app_book_recent')]
     public function showBookByDate(string $date ):Response{
-        $date= new \DateTimeImmutable($date);
 
         return $this->render('book/show_book_date.html.twig', [
             'books' => $this->bookService->getBookBDate($date),
+        ]);
+    }
+
+    #[Route('/books/category/{categoryName}', name: 'app_book_category')]
+    public function showBookByCategories(string $categoryName ):Response{
+
+        return $this->render('book/show_book_category.html.twig', [
+            'books' => $this->bookService->getBookByCategories($categoryName),
         ]);
     }
 }

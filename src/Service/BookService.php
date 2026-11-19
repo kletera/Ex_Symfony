@@ -26,7 +26,16 @@ class BookService{
         return $this->bookRepository->findByTitle($title);
     }
 
-    public function getBookBDate(\DateTimeInterface $date): array{
+    public function getBookBDate(string $date): array{
+        $date= new \DateTimeImmutable($date);
+
         return $this->bookRepository->findPublishedAfter($date);
+    }
+
+    public function getBookByCategories(string $categoryName): array{
+
+        $categoryName= explode(',',$categoryName);
+
+        return $this->bookRepository->findByCategory($categoryName);
     }
 }
