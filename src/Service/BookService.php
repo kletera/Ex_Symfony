@@ -25,4 +25,8 @@ class BookService{
     public function getBookByTitleRepo(string $title): array{
         return $this->bookRepository->findByTitle($title);
     }
+
+    public function getBookBDate(\DateTimeInterface $date): array{
+        return $this->bookRepository->findPublishedAfter($date);
+    }
 }

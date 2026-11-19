@@ -69,4 +69,13 @@ final class BookController extends AbstractController
             'books' => $this->bookService->getBookByTitleRepo($title),
         ]);
     }
+
+    #[Route('/books/recent/{date}', name: 'app_book_recent')]
+    public function showBookByDate(string $date ):Response{
+        $date= new \DateTimeImmutable($date);
+
+        return $this->render('book/show_book_date.html.twig', [
+            'books' => $this->bookService->getBookBDate($date),
+        ]);
+    }
 }
