@@ -21,4 +21,8 @@ class BookService{
     public function getBookByTitle(string $title): ?Book{
         return $this->bookRepository->findOneBy(['title'=> $title]);
     }
+
+    public function getBookByTitleRepo(string $title): array{
+        return $this->bookRepository->findByTitle($title);
+    }
 }

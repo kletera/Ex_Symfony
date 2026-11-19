@@ -61,4 +61,12 @@ final class BookController extends AbstractController
             'book' => $book,
         ]);
     }
+
+    #[Route('/books/search/{title}', name: 'app_book_search_title')]
+    public function searchBooksByTitle(string $title):Response{
+
+        return $this->render('book/search_book_title.html.twig', [
+            'books' => $this->bookService->getBookByTitleRepo($title),
+        ]);
+    }
 }
