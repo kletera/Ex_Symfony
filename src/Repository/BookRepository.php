@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\DTO\BookListDto;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -71,5 +72,20 @@ class BookRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findBookListDto(): ?array
+    {
+        return $this->createQueryBuilder('b')
+            ->select(
+                'NEW App\DTO\BookListDto(
+                    b.id,
+                    b.title,
+                    b.author,
+                    b.publishAt
+                )'
+            )
+            ->getQuery()
+            ->getResult();
     }
 }

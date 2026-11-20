@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\BookListDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -83,6 +84,14 @@ final class BookController extends AbstractController
 
         return $this->render('book/show_book_category.html.twig', [
             'books' => $this->bookService->getBookByCategories($categoryName),
+        ]);
+    }
+
+    #[Route('/books/dto', name: 'app_book_dto')]
+    public function showBookListDto():Response{
+
+        return $this->render('book/show_book_date.html.twig', [
+            'books' => $this->bookService->getBookListDto(),
         ]);
     }
 }

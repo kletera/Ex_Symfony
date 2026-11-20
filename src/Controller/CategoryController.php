@@ -4,8 +4,12 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CategoryService;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use App\Form\CategoryType;
+use App\Entity\Category;
 
 class CategoryController extends AbstractController{
     public function __construct(private CategoryService $categoryService)
@@ -30,5 +34,27 @@ class CategoryController extends AbstractController{
         ]);
     }
 
+    #[Route(path:'/category/new', name:'app_category_new', methods:["GET", "POST"])]
+    public function new(Request $request):Response 
+    {
+        $category = new Category();
+
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted()) {
+            //ajouter avec le CategoryService::saevCategory
+            $msg = $this->categoryService->saveCategory($category);
+
+            $this->addFlash('notice', $msg);
+
+            return $this->redirectToRoute('app_category_new');
+        }
+
+        return $this->render('category/category_new.html.twig', [
+            'form'=> $form
+        ]);
+    }
     
 }

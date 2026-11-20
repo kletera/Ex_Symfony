@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DTO\BookListDto;
 use App\Entity\Book;
 use App\Repository\BookRepository;
 
@@ -37,5 +38,9 @@ class BookService{
         $categoryName= explode(',',$categoryName);
 
         return $this->bookRepository->findByCategory($categoryName);
+    }
+
+    public function getBookListDto(): array{
+        return $this->bookRepository->findBookListDto();
     }
 }

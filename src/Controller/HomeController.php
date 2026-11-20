@@ -33,6 +33,16 @@ final class HomeController extends AbstractController{
         ],
     ];
         return $this->render('home/index.html.twig',[
+             "messages" => [
+                "Bienvenue sur le site !",
+                "Enregistrement réussi.",
+                "Une erreur est survenue."
+            ],
+            "types" => [
+                "",
+                "success",
+                "danger"
+            ],
             'formation' => $formations,
         ]);
     }

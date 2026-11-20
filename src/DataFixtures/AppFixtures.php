@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Category;
-use App\Entity\User;
 use App\Entity\Book;
 use DateTimeImmutable;
 use Faker;
@@ -17,7 +16,6 @@ class AppFixtures extends Fixture
         //Création d'un objet Faker
         $faker = Faker\Factory::create('fr_FR');
 
-        $tabUser=[];
         $tabCatego=[];
 
         for($i=0; $i<20; $i++){
@@ -29,18 +27,7 @@ class AppFixtures extends Fixture
             $manager->persist($category);
             $tabCatego[]=$category;
         }
-        for($i=0; $i<10; $i++){
-            //Créer des objets User
-            $user = new User();
-            $user->setEmail($faker->unique()->email());
-            $user->setPassword($faker->password());
-            $user->setFirstname($faker->lastName());
-            $user->setLastname($faker->firstName());
-            
-            //persister l'objet
-            $manager->persist($user);
-            $tabUser[]=$user;
-        }
+        
         for($i=0; $i<60; $i++){
             //Créer des objets Book
             $book = new Book();
@@ -48,7 +35,6 @@ class AppFixtures extends Fixture
             $book->setResume($faker->paragraph(2));
             $book->setPublishAt(new DateTimeImmutable($faker->date()));
             $book->setAuthor($faker->name());
-            $book->setUser($faker->randomElement($tabUser));
             for ($j=0; $j < 5; $j++) { 
                 $book->addCategory($faker->randomElement($tabCatego)) ;               
             }
