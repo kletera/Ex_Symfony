@@ -1,0 +1,6 @@
+{# templates/components/Toast.html.twig #}
+{% for message in app.flashes('notice') %}
+    <div class="flash-notice">
+        <twig:Alert :message="message" type="success" />
+    </div>
+{% endfor %}

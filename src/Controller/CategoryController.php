@@ -7,15 +7,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CategoryService;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use App\Form\CategoryType;
 use App\Entity\Category;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CategoryController extends AbstractController{
     public function __construct(private CategoryService $categoryService)
     {}
 
-     #[Route(path:'/categories', name: 'app_categories')]
+    #[Route(path:'/categories', name: 'app_categories')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY', message:'Vous n\'est pas autorisé')]
     public function showAllCategories(): Response
     {
         //Récupération de toutes les catégories de la BDD
@@ -26,7 +27,8 @@ class CategoryController extends AbstractController{
         ]);
     }
 
-    #[Route('/category/{id}', name:'app_category')]
+    #[Route('/category/{id}', name:'app_category', requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_USER', message:'Vous n\'est pas autorisé')]
     public function showCategoryById(int $id): Response
     {
         return $this->render('category/show_category_id.html.twig', [
@@ -35,6 +37,7 @@ class CategoryController extends AbstractController{
     }
 
     #[Route(path:'/category/new', name:'app_category_new', methods:["GET", "POST"])]
+    #[IsGranted('ROLE_ADMIN', message:'Vous n\'est pas autorisé')]
     public function new(Request $request):Response 
     {
         $category = new Category();

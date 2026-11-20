@@ -15,7 +15,9 @@
                 {% endfor %}
             </nav>
         </div>
-             <a href="{{ path('app_logout') }}" class="btn btn-sm btn-ghost">Déconnexion</a>
+        {% if app.user %}
+             <a href="{{ logout_path() }}" class="btn btn-sm btn-ghost">Déconnexion</a>
+        {% else %}
             <nav aria-label="Compte" class="flex flex-wrap gap-1">
                 {% for item in [{label: 'Connexion', route: 'app_login', style: 'btn-ghost'}, {label: 'Inscription', route:
                 'app_register', style: 'btn-outline'}]
