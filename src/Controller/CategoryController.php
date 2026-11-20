@@ -61,6 +61,7 @@ class CategoryController extends AbstractController{
     }
 
     #[Route('/category/{id}/edit', name:'app_category_edit', requirements: ['id' => '\d+'], methods:["GET", "POST"])]
+    #[IsGranted('ROLE_USER', message:'Vous n\'est pas autorisé')]
     public function editCategorieById(int $id, Request $request): Response{
 
         $category=$this->categoryService->getCategoryById($id);
@@ -68,7 +69,10 @@ class CategoryController extends AbstractController{
             throw $this->createNotFoundException('Erreur 404 : Categorie introuvable.');
         }
 
-        $form = $this->createForm(CategoryType::class, $category);
+        $form = $this->createForm(CategoryType::class, $category, [
+            'label_save_edit'=>'Modifier'
+        ]);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {

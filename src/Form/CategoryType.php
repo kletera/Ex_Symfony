@@ -19,7 +19,7 @@ class CategoryType extends AbstractType
             ])
             ->add('save', SubmitType::class, [
                 'attr' => ['class' => 'save'],
-                'label'=> 'ajouter'
+                'label'=> $options['label_save_edit']
             ]);
     }
 
@@ -27,6 +27,9 @@ class CategoryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Category::class,
+            'label_save_edit'=> 'Ajouter'
         ]);
+         $resolver->setAllowedTypes('label_save_edit', 'string');
     }
+
 }
