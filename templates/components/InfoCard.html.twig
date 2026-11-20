@@ -10,6 +10,11 @@
         {% endif %}
         {% if detail %}
         <div class="card-actions mt-4 justify-end">
+            <a class="btn btn-outline btn-sm"
+                href="{{ path('app_category_edit', {id: objet.id}) }}"
+                aria-label="Modifier : {{ objet.name }}">
+                <span aria-hidden="true">✎</span> Modifier
+            </a>
             <a class="btn btn-neutral btn-sm" href="{{ path('app_category', {id: objet.id}) }}" aria-label="Voir le détail : {{ objet.name }}">Voir le détail <span aria-hidden="true">→</span></a>
         </div>
         {% endif %}

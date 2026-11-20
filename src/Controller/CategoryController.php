@@ -37,7 +37,7 @@ class CategoryController extends AbstractController{
     }
 
     #[Route(path:'/category/new', name:'app_category_new', methods:["GET", "POST"])]
-    #[IsGranted('ROLE_ADMIN', message:'Vous n\'est pas autorisé')]
+    #[IsGranted('ROLE_USER', message:'Vous n\'est pas autorisé')]
     public function new(Request $request):Response 
     {
         $category = new Category();
@@ -56,6 +56,31 @@ class CategoryController extends AbstractController{
         }
 
         return $this->render('category/category_new.html.twig', [
+            'form'=> $form
+        ]);
+    }
+
+    #[Route('/category/{id}/edit', name:'app_category_edit', requirements: ['id' => '\d+'], methods:["GET", "POST"])]
+    public function editCategorieById(int $id, Request $request): Response{
+
+        $category=$this->categoryService->getCategoryById($id);
+        if($category === null){
+            throw $this->createNotFoundException('Erreur 404 : Categorie introuvable.');
+        }
+
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            $msg = $this->categoryService->saveCategory($category);
+
+            $this->addFlash('notice', $msg);
+
+            return $this->redirectToRoute('app_category_edit',[ 'id'=>$id]);
+        }
+
+        return $this->render('category/category_edit.html.twig', [
             'form'=> $form
         ]);
     }

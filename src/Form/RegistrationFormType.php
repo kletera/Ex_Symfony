@@ -70,7 +70,7 @@ class RegistrationFormType extends AbstractType
                 'required' => false
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Saisir votre prénom',
+                'label' => 'Saisir votre nom',
                 'required' => false
             ])
         ;
