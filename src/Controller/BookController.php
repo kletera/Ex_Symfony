@@ -56,19 +56,19 @@ final class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/books/{title}', name: 'app_book_title', requirements: ['title' => '[a-zA-Z]+'])]
-    #[IsGranted('ROLE_USER', message:'Vous n\'est pas autorisé')]
-    public function showBookByTitle(string $title): Response{
+    // #[Route('/books/{title}', name: 'app_book_title', requirements: ['title' => '[a-zA-Z]+'])]
+    // #[IsGranted('ROLE_USER', message:'Vous n\'est pas autorisé')]
+    // public function showBookByTitle(string $title): Response{
 
-        $book = $this->bookService->getBookByTitle($title);
-        if ($book === null) {
-            throw $this->createNotFoundException('Erreur 404 : Livre introuvable.');
-        }
+    //     $book = $this->bookService->getBookByTitle($title);
+    //     if ($book === null) {
+    //         throw $this->createNotFoundException('Erreur 404 : Livre introuvable.');
+    //     }
 
-        return $this->render('book/show_book_title.html.twig', [
-            'book' => $book,
-        ]);
-    }
+    //     return $this->render('book/show_book_title.html.twig', [
+    //         'book' => $book,
+    //     ]);
+    // }
 
     #[Route('/books/search/{title}', name: 'app_book_search_title', requirements: ['title' => '[a-zA-Z]+'])]
     #[IsGranted('ROLE_USER', message:'Vous n\'est pas autorisé')]

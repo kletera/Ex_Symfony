@@ -8,6 +8,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,23 +16,43 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BookType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+      public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title',TextType::class)
-            ->add('resume',TextareaType::class)
+            ->add('title', TextType::class, [
+                'label' => 'Titre du livre',
+                'attr' => ['placeholder' => 'titre'],
+                'required'=> true
+            ])
+            ->add('resume', TextareaType::class, [
+                'label' => 'résumé du livre',
+                'attr' => ['placeholder' => 'resumé'],
+                'required'=> true
+
+            ])
             ->add('publishAt', DateType::class, [
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'input'  => 'datetime_immutable',
+                'required'=> true
             ])
-            ->add('author',TextType::class)
-            ->add('categories', EntityType::class, [
+            ->add('author',TextType::class, [
+                'label' => 'Auteur du livre',
+                'attr' => ['placeholder' => 'auteur'],
+                'required'=> true
+            ])
+            ->add('categories', EntityType::class,[
                 'class' => Category::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'multiple' => true,
-            ])
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+                'expanded' => true,
+                'by_reference' => true,
+                'required' => true,
+            ]
+
+            )
+            ->add('save', SubmitType::class, [
+                'label'=> 'Ajouter',
+                'attr' => ['class' => 'btn mt-2'],
             ])
         ;
     }
