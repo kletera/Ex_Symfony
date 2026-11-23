@@ -42,11 +42,10 @@ class BookType extends AbstractType
             ])
             ->add('categories', EntityType::class,[
                 'class' => Category::class,
-                'choice_label' => 'name',
+                'label'=> 'Catégorie (choix multiple possible)',
                 'multiple' => true,
-                'expanded' => true,
-                'by_reference' => true,
-                'required' => true,
+                'expanded' => false,
+                'attr' => ['class' => 'block w-full h-40 rounded-lg border border-base-300 bg-base-100 p-2 text-sm focus:outline-none focus:border-primary'],
             ]
 
             )

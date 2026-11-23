@@ -23,7 +23,13 @@
                                     {{ book.author }}
                                 </p>
                                 <h2 class="card-title mt-3 text-xl">{{ book.title }}</h2>
-                            </div>
+                              
+                                    {% for categories in book.categories %}
+                                    <twig:Badge
+                                        :label="categories.name"
+                                    />  
+                                    {% endfor %}
+                                </div>
                             <div class="card-actions justify-end">
                                 {# <a href="{{ path('app_book_edit', {id: book.id}) }}"
                                    class="btn btn-sm btn-outline btn-neutral">
