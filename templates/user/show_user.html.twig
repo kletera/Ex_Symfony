@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Détail de l'utilisateur{% endblock %}
+
+{% block body %}
+    <section class="container mx-auto max-w-2xl p-6">
+        {% if user %}
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h1 class="card-title text-3xl">Détail de l'utilisateur</h1>
+
+                    <ul class="mt-4 space-y-3">
+                        <li>
+                            <span class="font-semibold">Prénom :</span>
+                            {{ user.firstname }}
+                        </li>
+                        <li>
+                            <span class="font-semibold">Nom :</span>
+                            {{ user.lastname }}
+                        </li>
+                        <li>
+                            <span class="font-semibold">Email :</span>
+                            {{ user.email }}
+                        </li>
+                    </ul>
+
+                    <div class="card-actions justify-end mt-6">
+                        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary">
+                            Modifier
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <twig:Toast/>
+        {% else %}
+            <twig:Toast/>
+        {% endif %}
+    </section>
+{% endblock %}
