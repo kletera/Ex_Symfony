@@ -51,6 +51,5 @@ class BookService{
     public function saveBook(Book $book): void{
         $this->em->persist($book);
         $this->em->flush();
-
     }
 }

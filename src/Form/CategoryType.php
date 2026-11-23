@@ -29,7 +29,7 @@ class CategoryType extends AbstractType
             'data_class' => Category::class,
             'label_save_edit'=> 'Ajouter'
         ]);
-         $resolver->setAllowedTypes('label_save_edit', 'string');
+        $resolver->setAllowedTypes('label_save_edit', 'string');
     }
 
 }

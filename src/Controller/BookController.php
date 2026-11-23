@@ -128,4 +128,35 @@ final class BookController extends AbstractController
             'form'=> $form
         ]);
     }
+
+    #[Route('/books/{id}/edit', name:'app_book_edit', requirements: ['id' => '\d+'], methods:["GET", "POST"])]
+    #[IsGranted('ROLE_USER', message:'Vous n\'est pas autorisé')]
+    public function editBookById(int $id, Request $request): Response{
+
+        $book=$this->bookService->getBookById($id);
+        if($book === null){
+             $this->addFlash('notice', "Le livre n'existe pas");
+
+            return $this->redirectToRoute('app_book_new');
+        }
+
+        $form = $this->createForm(BookType::class, $book, [
+            'label_save_edit'=>'Modifier'
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+
+            $this->bookService->saveBook($book);
+
+            $this->addFlash('notice', 'Le livre a été modifier');
+
+            return $this->redirectToRoute('app_book_edit',[ 'id'=>$id]);
+        }
+
+        return $this->render('book/book_form.html.twig', [
+            'form'=> $form
+        ]);
+    } 
 }
