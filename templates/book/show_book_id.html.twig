@@ -3,26 +3,80 @@
 {% block title %}Détail du livre par id{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mx-auto max-w-2xl p-6">
 
-<div class="example-wrapper">
-    
     {% if book %}
-        <h1>Détail du livre par son id</h1>
-        <h2>{{book.title}}</h2>
-        <ul>
-            <li>Resumer :{{book.resume}}</li>
-            <li>Date de publication : {{ book.publishAt | date("d-m-Y") }}</li>
-            <li>Autheur :{{book.author}}</li>
-        </ul>
-        <a href="{{ path('app_books') }}">
-            Voir la liste des livres
-        </a>
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <p class="text-sm uppercase opacity-60">Détail du livre par son id</p>
+                <h1 class="card-title text-3xl">{{ book.title }}</h1>
+
+                <ul class="mt-4 space-y-3">
+                    <li>
+                        <span class="font-semibold">Résumé :</span>
+                        {{ book.resume }}
+                    </li>
+                    <li>
+                        <span class="font-semibold">Date de publication :</span>
+                        <span class="badge badge-outline">{{ book.publishAt|date("d-m-Y") }}</span>
+                    </li>
+                    <li>
+                        <span class="font-semibold">Auteur :</span>
+                        {{ book.author }}
+                    </li>
+                    <li><span class="font-semibold">Catégories :</span>
+                        {% for categories in book.categories %}
+                            <twig:Badge
+                                :label="categories.name"
+                            />  
+                        {% endfor %}
+                    </li>
+                </ul>
+
+                <div class="card-actions justify-between mt-6">
+                    <a href="{{ path('app_books') }}" class="btn btn-ghost">
+                        ← Voir la liste des livres
+                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <button type="button" class="btn btn-error"
+                                onclick="confirm_delete_modal.showModal()" >
+                            Supprimer
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {# Modal de confirmation #}
+        <dialog id="confirm_delete_modal" class="modal">
+            <div class="modal-box">
+                <h3 class="text-lg font-bold">Confirmer la suppression</h3>
+                <p class="py-4">
+                    Voulez-vous vraiment supprimer « {{ book.title }} » ? Cette action est irréversible.
+                </p>
+
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn">Annuler</button>
+                    </form>
+
+                    {% if deleteForm %}
+                        <twig:ConfirmDeleteForm 
+                        :form="deleteForm" 
+                        message="Supprimer le livre" />
+                    {% endif %}
+                </div>
+            </div>
+
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+            </form>
+        </dialog>
+
     {% else %}
-        <h1>Erreur 404 : Aucun livre trouver</h1>
-    {% endif %}   
+    <twig:Toast
+    />
+    {% endif %}
+
 </div>
 {% endblock %}

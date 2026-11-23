@@ -5,11 +5,15 @@ namespace App\Controller;
 use App\DTO\BookListDto;
 use App\Entity\Book;
 use App\Form\BookType;
+use App\Form\DeleteBookType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\BookService;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class BookController extends AbstractController
@@ -37,22 +41,17 @@ final class BookController extends AbstractController
     #[Route('/books/{id}', name: 'app_book_id', requirements: ['id' => '\d+'])]
     #[IsGranted('ROLE_USER', message:'Vous n\'est pas autorisé')]
     public function showBookById(int $id):Response{
-        // $book=null;
-        // foreach ($this->books as $b) {
-        //     if ($b['id'] === $id) {
-        //         $book = $b;
-        //         break;
-        //     }
-        // }
 
         $book=$this->bookService->getBookById($id);
 
         if ($book === null) {
-            throw $this->createNotFoundException('Erreur 404 : Livre introuvable.');
+            $this->addFlash('error', "Erreur 404 :Le livre n'existe pas");
         }
         return $this->render('book/show_book_id.html.twig', [
-            'controller_name' => 'BookController',
             'book' => $book,
+            'deleteForm' => $book && $this->isGranted('ROLE_ADMIN')
+                ? $this->createDeleteForm($id)->createView()
+                : null,
         ]);
     }
 
@@ -135,7 +134,7 @@ final class BookController extends AbstractController
 
         $book=$this->bookService->getBookById($id);
         if($book === null){
-             $this->addFlash('notice', "Le livre n'existe pas");
+             $this->addFlash('error', "Le livre n'existe pas");
 
             return $this->redirectToRoute('app_book_new');
         }
@@ -159,4 +158,34 @@ final class BookController extends AbstractController
             'form'=> $form
         ]);
     } 
+
+    #[Route(path: '/books/{id}/delete', name: 'app_book_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function delete(Request $request, int $id): Response
+    {
+        $form = $this->createDeleteForm($id);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return new Response('Formulaire de suppression invalide.', Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $book = $this->bookService->getBookById($id);
+            $this->bookService->deleteBook($book);
+            $this->addFlash('notice', 'Le Livre a été supprimé');
+        } catch (NotFoundHttpException $e) {
+            $this->addFlash('notice', $e->getMessage());
+        }
+        return $this->redirectToRoute('app_books', status: Response::HTTP_SEE_OTHER);
+    }
+
+    //Méthode qui génére un Formulaire de suppression
+    private function createDeleteForm(int $id): FormInterface
+    {
+        return $this->createForm(DeleteBookType::class, options: [
+            'action' => $this->generateUrl('app_book_delete', ['id' => $id]),
+            'csrf_token_id' => 'delete_book_'.$id,
+        ]);
+    }
 }
