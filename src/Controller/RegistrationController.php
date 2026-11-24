@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -32,19 +33,21 @@ class RegistrationController extends AbstractController
             // import facultatif d'une image de profi
             $file = $form->get('icon')->getData();
             //test si il est bien téléchargé
-            if (null != $file) {
+            if ($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-
-                //Déplacer dans le dossier public/images
-                $file->move('images/',  $newFilename);
+                
+                try {
+                    //Déplacer dans le dossier public/images
+                    $file->move('images/',  $newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', "error :" . $e->getMessage());
+                }
+                
 
                 $user->setIcon($newFilename);
-            }else {
-                // Aucune image importée : image par défaut
-                $user->setIcon('profil.png');
             }
 
             $entityManager->persist($user);
