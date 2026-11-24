@@ -11,9 +11,9 @@ class WeatherService
         private readonly HttpClientInterface $httpClient
     ) {}
 
-    public function getWeather(): array
+    public function getWeather(string $ion="1.44", string $lat="43"): array
     {
-        $url = "https://api.openweathermap.org/data/2.5/weather?lon=1.44&lat=43.6&appid=" . $this->apiKey . "&units=metric";
+        $url = "https://api.openweathermap.org/data/2.5/weather?lon=".$ion."&lat=".$lat."&appid=" . $this->apiKey . "&units=metric";
 
         try {
             $response = $this->httpClient->request(
@@ -25,5 +25,23 @@ class WeatherService
 
         }
        return [];
+    }
+
+    public function getWeatherByName(string $name){
+
+        $cities = "http://api.openweathermap.org/geo/1.0/direct?q=".$name."&appid=" . $this->apiKey. "&units=metric";
+
+        try {
+            $response = $this->httpClient->request(
+                'GET',
+                $cities
+            );
+            $results=$response->toArray();
+            $lat =$results[0]['lat'];
+            $ion = $results[0]['lon'];
+            return $this->getWeather($ion, $lat);
+        } catch(\Exception $e) {
+
+        }
     }
 }
