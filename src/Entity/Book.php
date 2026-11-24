@@ -36,6 +36,9 @@ class Book
     #[ORM\ManyToOne]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cover = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -133,6 +136,18 @@ class Book
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCover(): ?string
+    {
+        return $this->cover;
+    }
+
+    public function setCover(?string $cover): static
+    {
+        $this->cover = $cover;
 
         return $this;
     }

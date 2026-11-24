@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +14,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 class RegistrationFormType extends AbstractType
 {
@@ -72,6 +76,21 @@ class RegistrationFormType extends AbstractType
             ->add('lastname', TextType::class, [
                 'label' => 'Saisir votre nom',
                 'required' => false
+            ])
+            ->add('icon', FileType::class, [
+                'label'=> 'Importer une image de couverture',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Assert\File(
+                        maxSize : '1024k',
+                        extensions : ['png', 'jpeg', 'jpg'],
+                        extensionsMessage : 'Merci de téléverser une image PNG, JPG ou JPEG valide.',
+                    )
+                ],
+            ])
+            ->add('save', SubmitType::class,[
+                'label'=> "S'inscrire"
             ])
         ;
     }

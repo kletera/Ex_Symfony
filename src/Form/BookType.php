@@ -8,6 +8,7 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,9 +47,10 @@ class BookType extends AbstractType
                 'multiple' => true,
                 'expanded' => false,
                 'attr' => ['class' => 'block w-full h-40 rounded-lg border border-base-300 bg-base-100 p-2 text-sm focus:outline-none focus:border-primary'],
-            ]
-
-            )
+            ])
+            ->add('cover', FileType::class, [
+                'label'=> 'Importer une image de couverture'
+            ])
             ->add('save', SubmitType::class, [
                 'label'=> $options['label_save_edit'],
                 'attr' => ['class' => 'btn mt-2'],

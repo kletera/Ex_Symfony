@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 final class BookController extends AbstractController
 {
@@ -107,24 +108,38 @@ final class BookController extends AbstractController
 
     #[Route('/books/new', name: 'app_book_new', methods:["GET", "POST"])]
     #[IsGranted('ROLE_ADMIN', message:'Vous n\'est pas autorisé')]
-    public function new(Request $request):Response{
+    public function new(Request $request): Response
+    {
         $book = new Book();
 
         $form = $this->createForm(BookType::class, $book);
 
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted()) {
-            
+
+            //Récupération du fichier
+            $file = $form->get('cover')->getData();
+            //test si il est bien téléchargé
+            if (null != $file) {
+                //Récupération du nom
+                $fileName = $file->getClientOriginalName();
+                //set du nom du fichier
+                $book->setCover($fileName);
+
+                //Déplacer dans le dossier public/images
+                $file->move('images/', $file->getClientOriginalName());
+            }
+
             $this->bookService->saveBook($book);
 
-            $this->addFlash('notice', 'Le livre a été ajouter');
+            $this->addFlash('notice', 'Le livre ' . $book->getTitle() . ' a été ajouté');
 
             return $this->redirectToRoute('app_book_new');
         }
 
-        return $this->render('book/book_form.html.twig', [
-            'form'=> $form
+        return $this->render('book/book_new_edit.html.twig', [
+            'form' => $form
         ]);
     }
 
